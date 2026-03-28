@@ -1,0 +1,37 @@
+CONTEXT: You are provided with a Python task to compute average portfolio return.
+TASK: Implement the solution using the following reasoning steps:
+1. Convert net returns to gross returns
+2. Compute geometric mean of gross returns
+3. Convert gross average back to net average
+OUTPUT: Python code only
+
+
+import numpy as np
+
+
+def average_portfolio_return(net_returns):
+    """Compute the annualized average portfolio return from net returns."""
+    if not isinstance(net_returns, (list, tuple, np.ndarray)):
+        raise TypeError("net_returns must be a list/tuple/ndarray of numeric returns")
+    if len(net_returns) == 0:
+        raise ValueError("net_returns must contain at least one return")
+
+    gross_returns = []
+    for x in net_returns:
+        try:
+            gross_returns.append(1.0 + float(x))
+        except (ValueError, TypeError):
+            raise ValueError(f"Invalid return value: {x}")
+        if gross_returns[-1] <= 0:
+            raise ValueError(f"Gross return must be > 0, got {gross_returns[-1]}")
+
+    product = np.prod(gross_returns)
+    geometric_mean = product ** (1.0 / len(gross_returns))
+    net_average = geometric_mean - 1.0
+    return net_average
+
+
+if __name__ == "__main__":
+    examples = [0.05, -0.02, 0.03, 0.08]
+    print("Net returns:", examples)
+    print("Average portfolio return:", average_portfolio_return(examples))

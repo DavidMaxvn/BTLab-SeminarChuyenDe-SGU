@@ -1,0 +1,62 @@
+Prompt 1: Implement get_average_return with chain-of-thought.
+Prompt 2: Add type hints to all variables.
+Prompt 3: Change the docstring to Google Style.
+Prompt 4: Write unit tests for positive, negative, and mixed yearly returns.
+
+
+# Solution implementation
+
+def get_average_return(yearly_returns: list[float]) -> float:
+    """Compute the geometric average return from a list of annual net returns.
+
+    Args:
+        yearly_returns (list[float]): Annual returns as decimal values (e.g. 0.05 for +5%).
+
+    Returns:
+        float: Average annual net return (geometric mean minus 1).
+
+    Raises:
+        ValueError: If list is empty or contains invalid values that produce non-positive gross returns.
+    """
+    if not isinstance(yearly_returns, list):
+        raise TypeError("yearly_returns must be a list of floats")
+    if len(yearly_returns) == 0:
+        raise ValueError("yearly_returns must contain at least one return")
+
+    gross_returns: list[float] = []
+    for r in yearly_returns:
+        try:
+            value: float = float(r)
+        except (TypeError, ValueError):
+            raise ValueError(f"Invalid return value: {r}")
+        gross: float = 1.0 + value
+        if gross <= 0:
+            raise ValueError(f"Gross return must be > 0, got {gross}")
+        gross_returns.append(gross)
+
+    product: float = 1.0
+    for g in gross_returns:
+        product *= g
+
+    geometric_mean: float = product ** (1.0 / len(gross_returns))
+    net_average: float = geometric_mean - 1.0
+    return net_average
+
+
+if __name__ == "__main__":
+    import pytest
+
+    def test_positive_returns():
+        assert abs(get_average_return([0.10, 0.10, 0.10]) - 0.1) < 1e-9
+
+    def test_negative_returns():
+        assert abs(get_average_return([-0.1, -0.1, -0.1]) + 0.1) < 1e-9
+
+    def test_mixed_returns():
+        value = get_average_return([0.05, -0.02, 0.03])
+        assert abs(value - 0.019803) < 1e-6
+
+    test_positive_returns()
+    test_negative_returns()
+    test_mixed_returns()
+    print("All tests passed")

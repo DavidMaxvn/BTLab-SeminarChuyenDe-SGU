@@ -1,0 +1,6 @@
+2026-03-28 14:27:33,671 | INFO | src.chapter15.decorators | Calling print_fizzbuzz args=(20,) kwargs={}
+2026-03-28 14:27:33,671 | INFO | src.chapter15.decorators | FIZZBUZZ_COUNTER=1
+2026-03-28 21:37:00,267 | INFO | decorators | Calling print_fizzbuzz args=(20,) kwargs={}
+2026-03-28 21:37:00,268 | INFO | decorators | FIZZBUZZ_COUNTER=1
+2026-03-28 21:40:46,520 | INFO | src.chapter15.decorators | Calling print_fizzbuzz args=(20,) kwargs={}
+2026-03-28 21:40:46,522 | INFO | src.chapter15.decorators | FIZZBUZZ_COUNTER=1
